@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import './App.css';
+//import 'mvp.css';
+import CountryList from './CountryList';
+import Search from './Search';
+import Weather from './Weather';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [countries, setCountries] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  useEffect(() => {
+    fetch('https://restcountries.com/v3.1/all')
+      .then(response => response.json())
+      .then(data => setCountries(data));
+  }, []);
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleCountryClick = country => {
+    setSelectedCountry(country);
+  };
+
+  const filteredCountries = countries.filter(country =>
+    country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Country List</h1>
+      <Search searchTerm={searchTerm} handleSearch={handleSearch} />
+      <CountryList countries={filteredCountries} onCountryClick={handleCountryClick} selectedCountry={selectedCountry} />
+      {selectedCountry && <Weather capital={selectedCountry.capital[0]} />}
+    </div>
+  );
 }
 
-export default App
+export default App;

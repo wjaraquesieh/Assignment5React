@@ -40,3 +40,34 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+.App {
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+li:hover {
+  background-color: #e9e9e9;
+}
