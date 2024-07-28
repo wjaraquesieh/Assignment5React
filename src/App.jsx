@@ -4,11 +4,13 @@ import './App.css';
 import CountryList from './CountryList';
 import Search from './Search';
 import Weather from './Weather';
+import Modal from './Modal';
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://restcountries.com/v3.1/all')
@@ -22,6 +24,12 @@ function App() {
 
   const handleCountryClick = country => {
     setSelectedCountry(country);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCountry(null);
   };
 
   const filteredCountries = countries.filter(country =>
@@ -33,7 +41,9 @@ function App() {
       <h1>Country List</h1>
       <Search searchTerm={searchTerm} handleSearch={handleSearch} />
       <CountryList countries={filteredCountries} onCountryClick={handleCountryClick} selectedCountry={selectedCountry} />
-      {selectedCountry && <Weather capital={selectedCountry.capital[0]} />}
+      <Modal show={isModalOpen} onClose={closeModal}>
+        {selectedCountry && <Weather capital={selectedCountry.capital[0]} />}
+      </Modal>
     </div>
   );
 }

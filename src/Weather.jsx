@@ -14,10 +14,12 @@ const Weather = ({ capital }) => {
     return <div>Loading...</div>;
   }
 
+  const tempInCelsius = weather.main.temp - 273.15;
+
   return (
     <div>
       <h2>Weather in {capital}</h2>
-      <p>Temperature: {weather.main.temp} °C</p>
+      <p>Temperature: {tempInCelsius.toFixed(2)} °C</p>
       <p>Weather: {weather.weather[0].description}</p>
     </div>
   );
